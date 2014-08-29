@@ -62,7 +62,7 @@ function checkTimeElapsed(){
 
         
 
-        for
+        //for
 
         //console.log(resp.result['feed']['entry'][0]['title'][0]['_']);
         //console.log(resp.result['feed']['entry'][0]['media:group'][0]['media:content'][0]['$']['url']);

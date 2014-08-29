@@ -1,9 +1,22 @@
 {
 	"youtube" :  {
+		"rssURL" : "https://gdata.youtube.com/feeds/api/users/{{}}/uploads?v=1&max-results={{}}",
+		"rssParams" : ["userID", "videoCount"],
+		"addressRules" : {
+			"title" : ["feed", "entry", "**var**", "title", 0, "_"],
+			"videoURL" : ["feed","entry", 0, "media:group", 0, "media:content", 0, "$", "url"]
+		},
+		"categories" : {
 			"minecraft" : [ {
 					"userID" : "ethoslab",
-					"vidCount" : 1
+					"videoCount" : 1,
+				} 
+			],
+			"ytp" : [ {
+					"userID" : "durhamrockerz",
+					"videoCount" : 1,
 				} 
 			]
 		}
+	}
 }

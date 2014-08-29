@@ -3,7 +3,7 @@
 At the moment, all this does is read the RSS feed of the EthosLab youtube channel, convert the XML to JSON, extract the relevant info from the JSON object and write it to the /etc/motd file.
 
 ##Required Modules
-+ Request
++ request
 + xml2js
 + fs
 

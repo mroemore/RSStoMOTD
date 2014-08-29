@@ -43,7 +43,7 @@ function checkTimeElapsed(){
     if(currentDay > lastCheckedDay || currentHour > lastCheckedHour){
         lastCheckedDay = currentDay;
         lastCheckedHour = currentHour;
-        rssToObj(url);
+        rssToObj(url, resp);
     }else {
         console.log("did not check.");
     }
@@ -62,14 +62,14 @@ function checkTimeElapsed(){
     console.log("req executed.");
 }
 
-function rssToObj(url){
+function rssToObj(url, a){
     //resp.body = "gg no re";
-    resp.done = false;
+    a.done = false;
 
     var cb = function (error, response, body) {
         if (!error && response.statusCode === 200) {
-            resp.body = body;
-            resp.done = true;
+            a.body = body;
+            a.done = true;
         }
     }
 

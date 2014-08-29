@@ -43,33 +43,94 @@ function checkTimeElapsed(){
     if(currentDay > lastCheckedDay || currentHour > lastCheckedHour){
         lastCheckedDay = currentDay;
         lastCheckedHour = currentHour;
-        rssToObj(url, resp);
+        getFeeds('youtube');
+
+        fs.writeFile('/etc/motd', "" , function (err) { //init the file to be blank
+            if (err) throw err;
+            console.log('Wrote to file.');
+        });
     }else {
         console.log("did not check.");
     }
 
     if(resp.done){
-        parseString(resp.body, function(err, result) {resp.result = result;});
-        fs.writeFile('/etc/motd',"Most recent EthosLab video: \n" + resp.result['feed']['entry'][0]['title'][0]['_']+ "\nLink: \n" + resp.result['feed']['entry'][0]['media:group'][0]['media:content'][0]['$']['url'], function (err) {
+        
+        /*fs.writeFile('/etc/motd',"Most recent EthosLab video: \n" + resp.result['feed']['entry'][0]['title'][0]['_']+ "\nLink: \n" + resp.result['feed']['entry'][0]['media:group'][0]['media:content'][0]['$']['url'], function (err) {
             if (err) throw err;
             console.log('Wrote to MOTD file.');
-        });
+        });*/
+
+        
+
+        for
+
         //console.log(resp.result['feed']['entry'][0]['title'][0]['_']);
         //console.log(resp.result['feed']['entry'][0]['media:group'][0]['media:content'][0]['$']['url']);
-        resp.done = false;
+        //resp.done = false;
     }
 
     console.log("req executed.");
 }
 
-function rssToObj(url, a){
+function getFeeds(feedType) {
+    if(feedType == "youtube"){
+
+    }
+} //feedType should be a top level category in the config file like 'youtube'
+
+function getYoutubeFeed(dataObj){
+    var urlBefore = "https://gdata.youtube.com/feeds/api/users/";
+    var urlAfter = "/uploads?v=1&max-results=";
+
+    for(var key in datObj['youtube']){
+        if(datObj['youtube'][key] != undefined){
+            console.log('getting feeds for : ' + key);
+            for(var i = 0; i < datObj['youtube'][key].size; i++){
+                var finalUrl = urlBefore + datObj['youtube'][key][i]['userID'] + urlAfter + datObj['youtube'][key][i]['vidCount'];
+                rssToObj(finalUrl, datObj['youtube'][key][i]);
+            }
+        } else {
+            console.log('undefined: ' + key);
+        }
+    }
+}
+
+function appendYTFeedtoFile(fileDir, dataObj){
+    parseString(resp.body, function(err, result) {resp.result = result;});
+
+    for(var key in dataObj['youtube']){
+        fs.appendFile('/etc/motd', 
+            "\n " + 
+            dataObj['youtube'][key], 
+            function (err){
+                if (err) throw err;
+                console.log('Appended to file.');
+            }
+        );
+        for(var i = 0; i < dataObj['youtube'][key].size; i++){
+            fs.appendFile('/etc/motd', 
+            "\n " + 
+            dataObj['youtube'][key], 
+            function (err){
+                if (err) throw err;
+                console.log('Appended to file.');
+            }
+        );
+        }
+    }
+}
+
+function rssToObj(url, a){ //a should be data['category'] where category is something like 'youtube'
     //resp.body = "gg no re";
     a.done = false;
 
     var cb = function (error, response, body) {
         if (!error && response.statusCode === 200) {
-            a.body = body;
-            a.done = true;
+
+            parseString(body, function(err, result) {a.result = result;});
+        } else {
+            console.log('error retrieving RSS feed.');
+            console.log(error)
         }
     }
 
@@ -79,6 +140,5 @@ function rssToObj(url, a){
 /**
 * Program Code
 */
-var url = "https://gdata.youtube.com/feeds/api/users/ethoslab/uploads?v=1&max-results=1";
 
 setInterval(checkTimeElapsed, interval);

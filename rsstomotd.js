@@ -127,7 +127,7 @@ function rssToObj(url, a){ //a should be data['category'] where category is some
     var cb = function (error, response, body) {
         if (!error && response.statusCode === 200) {
 
-            parseString(body, function(err, result) {a.result = result;});
+            parseString(body, function(err, result) {a.result = result; console.log(a);});
         } else {
             console.log('error retrieving RSS feed.');
             console.log(error)

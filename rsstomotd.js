@@ -13,6 +13,11 @@ var resp = {done: false, body: "ye", result: "NONE"};
 var parseString = require("xml2js").parseString;
 console.log(parseString)
 var interval = 6000;
+
+//include config
+var data = require('./config');
+console.log(data);
+
  
 /**
  * Global variables
